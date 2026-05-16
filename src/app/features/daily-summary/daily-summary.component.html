@@ -1,0 +1,35 @@
+<section class="daily-summary-section" aria-label="Daily summary">
+  <div class="daily-summary-section-header">
+    <button
+      mat-button
+      type="button"
+      class="daily-summary-section-toggle"
+      [attr.aria-expanded]="isSectionExpanded()"
+      (click)="toggleSectionExpanded()"
+    >
+      <mat-icon>{{ isSectionExpanded() ? 'expand_less' : 'expand_more' }}</mat-icon>
+      <span>Daily Summary</span>
+    </button>
+  </div>
+
+  @if (isSectionExpanded()) {
+    <app-daily-summary-editor
+      [isEditorVisible]="isEditorVisible()"
+      [capturedSummaryDate]="capturedSummaryDate()"
+      [descriptionMarkdown]="draftDescriptionMarkdown()"
+      (createSummaryClicked)="onCreateSummaryClicked()"
+      (descriptionMarkdownChanged)="onDescriptionMarkdownChanged($event)"
+      (summarySaveRequested)="onSummarySaveRequested()"
+      (summaryEditCanceled)="onSummaryEditCanceled()"
+    />
+
+    @for (summary of savedWorkDaySummaries(); track summary.id) {
+      <app-saved-daily-summary
+        [workDaySummary]="summary"
+        [capturedDateWorkSessions]="getWorkSessionsForDate(summary.date)"
+        (editRequested)="onSummaryEditRequested($event)"
+        (deleteRequested)="onSummaryDeleteRequested($event)"
+      />
+    }
+  }
+</section>

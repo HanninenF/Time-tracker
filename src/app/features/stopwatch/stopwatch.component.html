@@ -1,0 +1,17 @@
+<section class="stopwatch-section" aria-label="Stopwatch">
+  <div class="stopwatch-display" role="timer" aria-live="polite">
+    {{ elapsedDisplayTime() }}
+  </div>
+
+  @if (isRunning()) {
+    <button mat-raised-button color="warn" aria-label="Stop timer" (click)="onStopwatchButtonClicked()">
+      <mat-icon>stop</mat-icon>
+      Stop
+    </button>
+  } @else {
+    <button mat-raised-button color="primary" aria-label="Start timer" (click)="onStopwatchButtonClicked()">
+      <mat-icon>play_arrow</mat-icon>
+      Start
+    </button>
+  }
+</section>

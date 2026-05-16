@@ -1,0 +1,206 @@
+@if (hasError()) {
+  <p class="sessions-error-message">
+    <mat-icon>error_outline</mat-icon>
+    Could not load sessions. Is the server running?
+  </p>
+} @else if (isLoading()) {
+  <div class="sessions-loading">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+} @else if (isEmpty()) {
+  <p class="sessions-empty-message">
+    No sessions found. Start the stopwatch or add a manual entry.
+  </p>
+} @else {
+  <div class="sessions-summary-bars" aria-label="Selected weekly totals">
+    <div class="sessions-total-bar" aria-label="Selected weekly time total">
+      <span class="sessions-total-label">Total</span>
+      <span class="sessions-total-value">{{ formatTotalMinutes(selectedWeeklyTotalMinutes()) }}</span>
+      <span class="sessions-total-meta">
+        @if (selectedWeeklySummaryCount() === 0) {
+          all weeks
+        } @else {
+          {{ selectedWeeklySummaryCount() }} selected
+        }
+      </span>
+    </div>
+
+    <button
+      type="button"
+      class="sessions-money-bar sessions-money-bar-toggleable"
+      [class.sessions-money-bar-collapsed]="!showMoneySummary()"
+      [attr.aria-pressed]="showMoneySummary()"
+      [attr.aria-label]="showMoneySummary() ? 'Collapse money summary' : 'Expand money summary'"
+      (click)="toggleMoneySummaryVisible()"
+    >
+      <span class="sessions-money-bar-content">
+        <span class="sessions-total-label">Money</span>
+        <span class="sessions-total-value">{{ formatCurrency(selectedWeeklyGrossAmount()) }}</span>
+        <span class="sessions-total-meta">
+          net {{ formatCurrency(selectedWeeklyNetAmount()) }}
+        </span>
+      </span>
+
+      <mat-icon class="sessions-money-bar-chevron">
+        {{ showMoneySummary() ? 'chevron_right' : 'chevron_left' }}
+      </mat-icon>
+    </button>
+  </div>
+
+  <div class="table-wrapper" role="region" aria-label="Work sessions table" tabindex="0">
+    <table class="sessions-table">
+      <thead>
+        <tr>
+          <th
+            scope="col"
+            class="sortable-column"
+            (click)="onSortColumnClicked(SortField.Date)"
+            [attr.aria-sort]="activeSortField() === SortField.Date ? (activeSortDirection() === 'asc' ? 'ascending' : 'descending') : 'none'"
+          >
+            Date{{ getSortIndicator(SortField.Date) }}
+          </th>
+          <th scope="col">Start</th>
+          <th scope="col">Stop</th>
+          <th
+            scope="col"
+            class="sortable-column"
+            (click)="onSortColumnClicked(SortField.WorkedTime)"
+            [attr.aria-sort]="activeSortField() === SortField.WorkedTime ? (activeSortDirection() === 'asc' ? 'ascending' : 'descending') : 'none'"
+          >
+            Worked{{ getSortIndicator(SortField.WorkedTime) }}
+          </th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (weekGroup of weekGroups(); track weekGroup.weekStartDate) {
+          <tr class="week-group-row">
+            <td colspan="5">
+              <div class="week-group-header">
+                <button
+                  mat-button
+                  type="button"
+                  class="week-collapse-button"
+                  [attr.aria-expanded]="!isWeekCollapsed(weekGroup.weekStartDate)"
+                  (click)="toggleWeekCollapsed(weekGroup.weekStartDate)"
+                >
+                  <mat-icon>{{ isWeekCollapsed(weekGroup.weekStartDate) ? 'expand_more' : 'expand_less' }}</mat-icon>
+                  <span>{{ weekGroup.weekStartDate }} - {{ weekGroup.weekEndDate }}</span>
+                </button>
+
+                @if (weekGroup.weeklySummary) {
+                  <button
+                    type="button"
+                    class="weekly-total-pill"
+                    [class.weekly-total-pill-active]="isWeeklySummarySelected(weekGroup.weeklySummary.id)"
+                    [attr.aria-pressed]="isWeeklySummarySelected(weekGroup.weeklySummary.id)"
+                    [attr.aria-label]="'Weekly total ' + formatTotalMinutes(weekGroup.weeklySummary.totalMinutes)"
+                    (click)="toggleWeeklySummary(weekGroup.weeklySummary.id)"
+                  >
+                    {{ formatTotalMinutes(weekGroup.weeklySummary.totalMinutes) }}
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+
+          @if (!isWeekCollapsed(weekGroup.weekStartDate)) {
+            @for (workSession of weekGroup.sessions; track workSession.id) {
+              @if (editingSessionId() === workSession.id) {
+                <tr class="editing-row">
+                  <td>
+                    <mat-form-field appearance="outline" class="inline-field">
+                      <mat-label>Date</mat-label>
+                      <input
+                        matInput
+                        type="date"
+                        [ngModel]="editDate()"
+                        (ngModelChange)="editDate.set($event)"
+                        name="editDate"
+                      />
+                    </mat-form-field>
+                  </td>
+                  <td class="time-cell">{{ workSession.startTime ?? '-' }}</td>
+                  <td class="time-cell">{{ workSession.stopTime ?? '-' }}</td>
+                  <td>
+                    <div class="inline-duration-fields">
+                      <mat-form-field appearance="outline" class="inline-field-narrow">
+                        <mat-label>Hours</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          [ngModel]="editHours()"
+                          (ngModelChange)="editHours.set(+$event)"
+                          name="editHours"
+                          min="0"
+                        />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" class="inline-field-narrow">
+                        <mat-label>Min</mat-label>
+                        <input
+                          matInput
+                          type="number"
+                          [ngModel]="editMinutes()"
+                          (ngModelChange)="editMinutes.set(+$event)"
+                          name="editMinutes"
+                          min="0"
+                          max="59"
+                        />
+                      </mat-form-field>
+                    </div>
+                  </td>
+                  <td class="actions-cell">
+                    <button
+                      mat-icon-button
+                      color="primary"
+                      aria-label="Save changes"
+                      matTooltip="Save"
+                      (click)="onEditSaveClicked(workSession)"
+                    >
+                      <mat-icon>check</mat-icon>
+                    </button>
+                    <button
+                      mat-icon-button
+                      aria-label="Cancel editing"
+                      matTooltip="Cancel"
+                      (click)="onEditCancelClicked()"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              } @else {
+                @let workedTimeDisplay = formatTotalMinutes(workSession.totalMinutes);
+                <tr>
+                  <td>{{ workSession.date }}</td>
+                  <td class="time-cell">{{ workSession.startTime ?? '-' }}</td>
+                  <td class="time-cell">{{ workSession.stopTime ?? '-' }}</td>
+                  <td>{{ workedTimeDisplay }}</td>
+                  <td class="actions-cell">
+                    <button
+                      mat-icon-button
+                      aria-label="Edit session"
+                      matTooltip="Edit"
+                      (click)="onEditClicked(workSession)"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      aria-label="Delete session"
+                      matTooltip="Delete"
+                      (click)="onDeleteClicked(workSession.id)"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              }
+            }
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+}

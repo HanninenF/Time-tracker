@@ -1,0 +1,74 @@
+<section class="saved-summary-section" aria-label="Saved daily summary">
+  <div class="summary-header">
+    <button
+      mat-button
+      class="summary-toggle"
+      type="button"
+      [attr.aria-expanded]="isDailySummaryExpanded()"
+      (click)="toggleDailySummary()"
+    >
+      <mat-icon>{{ isDailySummaryExpanded() ? 'expand_less' : 'expand_more' }}</mat-icon>
+      <span>Daily Summary for {{ workDaySummary().date }}</span>
+    </button>
+
+    <span class="summary-total-time">{{ totalWorkedTimeDisplay() }}</span>
+
+    <button
+      mat-icon-button
+      type="button"
+      aria-label="Edit daily summary"
+      (click)="onEditClicked()"
+    >
+      <mat-icon>edit</mat-icon>
+    </button>
+
+    <button
+      mat-icon-button
+      color="warn"
+      type="button"
+      aria-label="Delete daily summary"
+      (click)="onDeleteClicked()"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+
+  @if (isDailySummaryExpanded()) {
+    <div class="saved-summary-content">
+      @if (capturedDateWorkSessions().length === 0) {
+        <p class="empty-message">No work sessions found for this date.</p>
+      } @else {
+        <div class="summary-sessions" aria-label="Work sessions for captured date">
+          @for (workSession of capturedDateWorkSessions(); track workSession.id) {
+            <div class="summary-session-row">
+              <span>{{ workSession.date }}</span>
+              <span>{{ workSession.startTime ?? '—' }}</span>
+              <span>{{ workSession.stopTime ?? '—' }}</span>
+              <span>{{ formatTotalMinutes(workSession.totalMinutes) }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      <section class="markdown-summary-section" aria-label="Markdown summary">
+        <button
+          mat-button
+          class="summary-toggle nested-toggle"
+          type="button"
+          [attr.aria-expanded]="isMarkdownSummaryExpanded()"
+          (click)="toggleMarkdownSummary()"
+        >
+          <mat-icon>{{ isMarkdownSummaryExpanded() ? 'expand_less' : 'expand_more' }}</mat-icon>
+          Markdown summary
+        </button>
+
+        @if (isMarkdownSummaryExpanded()) {
+          <markdown
+            class="markdown-summary"
+            [data]="workDaySummary().descriptionMarkdown || 'No summary text saved.'"
+          />
+        }
+      </section>
+    </div>
+  }
+</section>

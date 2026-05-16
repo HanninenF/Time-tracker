@@ -1,0 +1,33 @@
+<main class="app-container">
+  <header class="app-header">
+    <h1 class="app-title">Time Tracker</h1>
+  </header>
+
+  <app-stopwatch (sessionUpdated)="onSessionUpdated()" />
+
+  <app-manual-entry (sessionSaved)="onManualSessionSaved($event)" />
+
+  <app-daily-summary [workSessionsChangeVersion]="workSessionsChangeVersion()" />
+
+  <section class="sessions-section" aria-label="Work sessions">
+    <div class="sessions-header">
+      <h2 class="sessions-heading">Work Sessions</h2>
+      <app-session-filter
+        (filterApplied)="onFilterApplied($event)"
+        (filterCleared)="onFilterCleared()"
+      />
+    </div>
+
+    <app-sessions-list
+      [workSessions]="workSessions()"
+      [weeklySummaries]="weeklySummaries()"
+      [isLoading]="isLoadingSessions()"
+      [hasError]="hasLoadError()"
+      [activeSortField]="activeSortField()"
+      [activeSortDirection]="activeSortDirection()"
+      (sortChanged)="onSortChanged($event)"
+      (editSaved)="onEditSaved($event)"
+      (deleteRequested)="onDeleteRequested($event)"
+    />
+  </section>
+</main>

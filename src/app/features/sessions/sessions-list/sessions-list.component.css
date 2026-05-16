@@ -1,0 +1,276 @@
+.sessions-loading {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.sessions-error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--mat-sys-error);
+  margin: 0;
+}
+
+.sessions-empty-message {
+  color: var(--mat-sys-on-surface-variant);
+  margin: 0;
+}
+
+.sessions-summary-bars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.875rem;
+}
+
+.sessions-total-bar,
+.sessions-money-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mat-sys-surface-container-high) 88%, black 12%);
+  border: 1px solid var(--mat-sys-outline-variant);
+  color: var(--mat-sys-on-surface);
+}
+
+.sessions-money-bar-toggleable {
+  position: relative;
+  overflow: hidden;
+  justify-content: flex-start;
+  gap: 0;
+  width: auto;
+  max-width: 1000px;
+  padding-right: 0.5rem;
+  cursor: pointer;
+  transition:
+    max-width 220ms ease,
+    padding-left 220ms ease,
+    padding-right 220ms ease,
+    background-color 220ms ease,
+    border-color 220ms ease;
+}
+
+.sessions-money-bar-toggleable:hover {
+  background: color-mix(in srgb, var(--mat-sys-surface-container-high) 94%, var(--mat-sys-primary) 6%);
+}
+
+.sessions-money-bar-collapsed {
+  max-width: 3rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.sessions-money-bar-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition:
+    opacity 180ms ease,
+    max-width 220ms ease,
+    transform 220ms ease;
+}
+
+.sessions-money-bar-collapsed .sessions-money-bar-content {
+  opacity: 0;
+  max-width: 0;
+  transform: translateX(-0.35rem);
+}
+
+.sessions-money-bar-chevron {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  color: var(--mat-sys-primary);
+  transition: transform 220ms ease;
+}
+
+.sessions-money-bar-collapsed .sessions-money-bar-chevron {
+  transform: rotate(180deg);
+}
+
+.sessions-total-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.sessions-total-value {
+  font-size: 1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.sessions-total-meta {
+  font-size: 0.8rem;
+  color: var(--mat-sys-on-surface-variant);
+  white-space: nowrap;
+}
+
+.sessions-money-bar .sessions-total-value {
+  white-space: nowrap;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.sessions-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--mat-sys-surface-container);
+}
+
+.sessions-table thead th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface-variant);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  white-space: nowrap;
+}
+
+.sessions-table tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  vertical-align: middle;
+}
+
+.week-group-row td {
+  padding: 0.85rem 1rem 0.5rem;
+  border-bottom: none;
+}
+
+.week-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.week-collapse-button {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding-inline: 0.4rem;
+  min-width: 0;
+}
+
+.week-collapse-button mat-icon {
+  margin-right: 0;
+}
+
+.sessions-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.sessions-table tbody tr:hover {
+  background: var(--mat-sys-surface-container-high);
+}
+
+.sortable-column {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable-column:hover {
+  color: var(--mat-sys-primary);
+}
+
+.time-cell {
+  font-variant-numeric: tabular-nums;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.875rem;
+}
+
+.date-cell-content {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.weekly-total-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mat-sys-primary) 18%, transparent);
+  color: var(--mat-sys-primary);
+  border: 1px solid color-mix(in srgb, var(--mat-sys-primary) 34%, transparent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.weekly-total-pill:hover {
+  background: color-mix(in srgb, var(--mat-sys-primary) 28%, transparent);
+}
+
+.weekly-total-pill-active {
+  background: var(--mat-sys-primary);
+  color: var(--mat-sys-on-primary);
+  border-color: var(--mat-sys-primary);
+}
+
+.actions-cell {
+  white-space: nowrap;
+}
+
+.editing-row {
+  background: var(--mat-sys-surface-container-highest);
+}
+
+.inline-field {
+  width: 9rem;
+}
+
+.inline-field-narrow {
+  width: 5rem;
+}
+
+.inline-duration-fields {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .sessions-summary-bars {
+    flex-direction: column;
+  }
+
+  .sessions-total-bar,
+  .sessions-money-bar {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .week-group-header {
+    flex-wrap: wrap;
+  }
+
+  .week-collapse-button {
+    width: 100%;
+  }
+
+  .date-cell-content {
+    flex-wrap: wrap;
+  }
+}

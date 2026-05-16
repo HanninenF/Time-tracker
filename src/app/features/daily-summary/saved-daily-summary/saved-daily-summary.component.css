@@ -1,0 +1,103 @@
+.saved-summary-section {
+  border-radius: 0.75rem;
+  background: var(--mat-sys-surface-container);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.summary-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-right: 0.5rem;
+}
+
+.summary-toggle {
+  width: 100%;
+  justify-content: flex-start;
+  border-radius: 0;
+  padding: 0.75rem 1rem;
+}
+
+.summary-total-time {
+  color: var(--mat-sys-on-surface-variant);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.saved-summary-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 1rem 1rem;
+}
+
+.summary-sessions {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.summary-session-row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) minmax(4rem, 0.7fr) minmax(4rem, 0.7fr) minmax(5rem, 0.8fr);
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  font-size: 0.875rem;
+}
+
+.summary-session-row:last-child {
+  border-bottom: none;
+}
+
+.empty-message {
+  color: var(--mat-sys-on-surface-variant);
+  margin: 0;
+}
+
+.markdown-summary-section {
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.nested-toggle {
+  background: var(--mat-sys-surface-container-high);
+}
+
+.markdown-summary {
+  display: block;
+  padding: 1rem;
+  overflow-wrap: anywhere;
+  color: var(--mat-sys-on-surface);
+}
+
+.markdown-summary ::ng-deep > :first-child {
+  margin-top: 0;
+}
+
+.markdown-summary ::ng-deep > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-summary ::ng-deep code {
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  background: var(--mat-sys-surface-container-high);
+}
+
+.markdown-summary ::ng-deep pre {
+  overflow-x: auto;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--mat-sys-surface-container-high);
+}
+
+@media (max-width: 640px) {
+  .summary-session-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,63 @@
+<section class="manual-entry-section" aria-label="Manual entry">
+  @if (isFormVisible()) {
+    <button mat-stroked-button color="primary" aria-expanded="true" (click)="onToggleFormClicked()">
+      <mat-icon>expand_less</mat-icon>
+      Hide manual entry
+    </button>
+  } @else {
+    <button mat-stroked-button color="primary" aria-expanded="false" (click)="onToggleFormClicked()">
+      <mat-icon>add</mat-icon>
+      Add manual entry
+    </button>
+  }
+
+  @if (isFormVisible()) {
+    <form class="manual-entry-form" (ngSubmit)="onSaveClicked()" aria-label="Manual session form">
+      <mat-form-field appearance="outline">
+        <mat-label>Date</mat-label>
+        <input
+          matInput
+          type="date"
+          [ngModel]="entryDate()"
+          (ngModelChange)="entryDate.set($event)"
+          name="entryDate"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="field-narrow">
+        <mat-label>Hours</mat-label>
+        <input
+          matInput
+          type="number"
+          [ngModel]="entryHours()"
+          (ngModelChange)="entryHours.set(+$event)"
+          name="entryHours"
+          min="0"
+          max="23"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="field-narrow">
+        <mat-label>Minutes</mat-label>
+        <input
+          matInput
+          type="number"
+          [ngModel]="entryMinutes()"
+          (ngModelChange)="entryMinutes.set(+$event)"
+          name="entryMinutes"
+          min="0"
+          max="59"
+        />
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button mat-raised-button color="primary" type="submit">
+          <mat-icon>save</mat-icon>
+          Save
+        </button>
+        <button mat-button type="button" (click)="onDiscardClicked()">Discard</button>
+      </div>
+    </form>
+  }
+</section>

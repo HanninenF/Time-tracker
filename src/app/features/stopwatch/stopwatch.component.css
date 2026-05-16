@@ -1,0 +1,18 @@
+.stopwatch-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2.5rem 2rem;
+  border-radius: 0.75rem;
+  background: var(--mat-sys-surface-container);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.stopwatch-display {
+  font-size: 4rem;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  color: var(--mat-sys-on-surface);
+}

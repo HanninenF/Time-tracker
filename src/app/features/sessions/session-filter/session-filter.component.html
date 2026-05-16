@@ -1,0 +1,37 @@
+<div class="filter-bar" role="search" aria-label="Filter sessions by date">
+  <label class="date-filter-field">
+    <span class="date-filter-label">From</span>
+    <input
+      type="date"
+      class="date-filter-input"
+      [ngModel]="dateFrom()"
+      (ngModelChange)="dateFrom.set($event)"
+      name="filterDateFrom"
+      aria-label="Filter from date"
+    />
+  </label>
+
+  <label class="date-filter-field">
+    <span class="date-filter-label">To</span>
+    <input
+      type="date"
+      class="date-filter-input"
+      [ngModel]="dateTo()"
+      (ngModelChange)="dateTo.set($event)"
+      name="filterDateTo"
+      aria-label="Filter to date"
+    />
+  </label>
+
+  <button mat-raised-button color="primary" (click)="onApplyClicked()">
+    <mat-icon>filter_list</mat-icon>
+    Apply
+  </button>
+
+  @if (hasActiveFilter()) {
+    <button mat-button (click)="onClearClicked()">
+      <mat-icon>clear</mat-icon>
+      Clear
+    </button>
+  }
+</div>

@@ -1,0 +1,32 @@
+@if (isEditorVisible()) {
+  <div class="daily-summary-editor">
+    <div class="daily-summary-editor-header">
+      <h2 class="daily-summary-heading">Daily Summary</h2>
+      <span class="captured-date">{{ capturedSummaryDate() }}</span>
+    </div>
+
+    <mat-form-field appearance="outline" class="summary-field">
+      <mat-label>Markdown summary</mat-label>
+      <textarea
+        matInput
+        rows="7"
+        [ngModel]="descriptionMarkdown()"
+        (ngModelChange)="onDescriptionMarkdownChanged($event)"
+        name="descriptionMarkdown"
+      ></textarea>
+    </mat-form-field>
+
+    <div class="summary-actions">
+      <button mat-raised-button color="primary" type="button" (click)="onSaveClicked()">
+        <mat-icon>save</mat-icon>
+        Save Daily Summary
+      </button>
+      <button mat-button type="button" (click)="onCancelClicked()">Cancel</button>
+    </div>
+  </div>
+} @else {
+  <button mat-stroked-button color="primary" type="button" (click)="onCreateSummaryClicked()">
+    <mat-icon>edit_note</mat-icon>
+    Write daily summary
+  </button>
+}
