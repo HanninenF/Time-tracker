@@ -1,0 +1,62 @@
+<section class="month-archive-section" aria-label="Month archive">
+  <div class="month-archive-header">
+    <button
+      mat-button
+      type="button"
+      class="month-archive-section-toggle"
+      [attr.aria-expanded]="isSectionExpanded()"
+      (click)="toggleSectionExpanded()"
+    >
+      <mat-icon>{{ isSectionExpanded() ? 'expand_less' : 'expand_more' }}</mat-icon>
+      <span class="month-archive-title">Archive month</span>
+      <span class="month-archive-count">{{ archivedMonths().length }} archived</span>
+    </button>
+
+    @if (isSectionExpanded()) {
+      <p class="month-archive-description">
+        Archive a full calendar month. The data stays in the database, but it disappears from the UI and totals.
+      </p>
+    }
+  </div>
+
+  @if (isSectionExpanded()) {
+    <div class="month-archive-body">
+      <div class="month-archive-controls">
+        <label class="month-archive-field">
+          <span>Month</span>
+          <input
+            type="month"
+            [ngModel]="monthKey()"
+            (ngModelChange)="monthKey.set($event)"
+            name="archiveMonthKey"
+          />
+        </label>
+
+        <button type="button" mat-flat-button color="primary" (click)="onArchiveClicked()">
+          <mat-icon>archive</mat-icon>
+          Archive
+        </button>
+      </div>
+
+      @if (archivedMonths().length === 0) {
+        <p class="month-archive-empty">No archived months yet.</p>
+      } @else {
+        <ul class="month-archive-list">
+          @for (month of archivedMonths(); track month.monthKey) {
+            <li class="month-archive-item">
+              <div class="month-archive-item-copy">
+                <strong>{{ formatMonthLabel(month.monthKey) }}</strong>
+                <span>{{ month.monthStartDate }} - {{ month.monthEndDate }}</span>
+              </div>
+
+              <button type="button" mat-stroked-button (click)="onUnarchiveClicked(month.monthKey)">
+                <mat-icon>unarchive</mat-icon>
+                Restore
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  }
+</section>

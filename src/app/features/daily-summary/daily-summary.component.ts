@@ -30,14 +30,12 @@ export class DailySummaryComponent implements OnInit {
   constructor() {
     effect(() => {
       this.workSessionsChangeVersion();
-
-      const datesToReload = new Set(this.savedWorkDaySummaries().map((summary) => summary.date));
       const capturedDate = this.capturedSummaryDate();
-      if (capturedDate !== null) {
-        datesToReload.add(capturedDate);
-      }
 
-      datesToReload.forEach((date) => this.loadWorkSessionsForDate(date));
+      this.loadSavedWorkDaySummaries();
+      if (capturedDate !== null) {
+        this.loadWorkSessionsForDate(capturedDate);
+      }
     });
   }
 
@@ -118,6 +116,18 @@ export class DailySummaryComponent implements OnInit {
   private loadSavedWorkDaySummaries(): void {
     this.timeTrackingService.loadWorkDaySummaries((summaries) => {
       this.savedWorkDaySummaries.set(summaries);
+      this.workSessionsByDate.update((sessionsByDate) => {
+        const allowedDates = new Set(summaries.map((summary) => summary.date));
+        const nextSessionsByDate: Record<string, WorkSession[]> = {};
+
+        for (const [date, sessions] of Object.entries(sessionsByDate)) {
+          if (allowedDates.has(date) || date === this.capturedSummaryDate()) {
+            nextSessionsByDate[date] = sessions;
+          }
+        }
+
+        return nextSessionsByDate;
+      });
       summaries.forEach((summary) => this.loadWorkSessionsForDate(summary.date));
     });
   }

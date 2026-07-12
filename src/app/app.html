@@ -18,6 +18,8 @@
       />
     </div>
 
+    <app-month-archive (archiveChanged)="onArchiveChanged()" />
+
     <app-sessions-list
       [workSessions]="workSessions()"
       [weeklySummaries]="weeklySummaries()"

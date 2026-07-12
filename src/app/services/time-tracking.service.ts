@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AppUiState } from '../models/app-ui-state.model';
+import { ArchivedMonth } from '../models/archived-month.model';
 import { WorkSession } from '../models/work-session.model';
 import { SessionQueryParams } from '../models/session-query.model';
 import { SaveWorkDaySummaryRequest, WorkDaySummary } from '../models/work-day-summary.model';
@@ -14,8 +15,10 @@ export class TimeTrackingService {
 
   readonly workSessions = signal<WorkSession[]>([]);
   readonly weeklySummaries = signal<WeeklySummary[]>([]);
+  readonly archivedMonths = signal<ArchivedMonth[]>([]);
   readonly uiState = signal<AppUiState>({
     dailySummaryExpanded: true,
+    monthArchiveExpanded: true,
     collapsedWeekStartDates: [],
     showMoneySummary: true,
   });
@@ -80,6 +83,43 @@ export class TimeTrackingService {
         this.isLoadingSessions.set(false);
         this.hasLoadError.set(true);
       },
+    });
+  }
+
+  loadArchivedMonths(onComplete: (months: ArchivedMonth[]) => void): void {
+    this.httpClient.get<ArchivedMonth[]>('/api/archived-months').subscribe({
+      next: (months) => {
+        this.archivedMonths.set(months);
+        onComplete(months);
+      },
+      error: () => onComplete([]),
+    });
+  }
+
+  archiveMonth(monthKey: string, onComplete: (month: ArchivedMonth | null) => void): void {
+    this.httpClient.post<ArchivedMonth>('/api/archived-months', { monthKey }).subscribe({
+      next: (month) => {
+        this.archivedMonths.update((months) => {
+          const nextMonths = months.filter((existingMonth) => existingMonth.monthKey !== month.monthKey);
+          return [month, ...nextMonths].sort((firstMonth, secondMonth) =>
+            secondMonth.monthKey.localeCompare(firstMonth.monthKey)
+          );
+        });
+        onComplete(month);
+      },
+      error: () => onComplete(null),
+    });
+  }
+
+  unarchiveMonth(monthKey: string, onComplete: () => void): void {
+    this.httpClient.delete(`/api/archived-months/${monthKey}`).subscribe({
+      next: () => {
+        this.archivedMonths.update((months) =>
+          months.filter((month) => month.monthKey !== monthKey)
+        );
+        onComplete();
+      },
+      error: () => onComplete(),
     });
   }
 
