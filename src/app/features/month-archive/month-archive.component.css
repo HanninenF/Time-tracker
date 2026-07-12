@@ -1,0 +1,118 @@
+.month-archive-section {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.875rem;
+  background: var(--mat-sys-surface-container);
+}
+
+.month-archive-header {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.month-archive-section-toggle {
+  justify-content: flex-start;
+  gap: 0.35rem;
+  padding-inline: 0.4rem;
+  width: fit-content;
+}
+
+.month-archive-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.month-archive-description,
+.month-archive-empty,
+.month-archive-item-copy span {
+  margin: 0;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.month-archive-count {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--mat-sys-primary) 16%, transparent);
+  color: var(--mat-sys-primary);
+}
+
+.month-archive-section-toggle .month-archive-count {
+  margin-left: 0.35rem;
+}
+
+.month-archive-body {
+  display: grid;
+  gap: 1rem;
+}
+
+.month-archive-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.month-archive-field {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 14rem;
+}
+
+.month-archive-field span {
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.month-archive-field input {
+  min-height: 2.5rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--mat-sys-outline);
+  border-radius: 10px;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+.month-archive-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.month-archive-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0.9rem;
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container-high);
+}
+
+.month-archive-item-copy {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.month-archive-item button mat-icon,
+.month-archive-controls button mat-icon {
+  margin-right: 0.35rem;
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (max-width: 640px) {
+  .month-archive-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

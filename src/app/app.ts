@@ -13,6 +13,7 @@ import { ManualEntryComponent } from './features/sessions/manual-entry/manual-en
 import { SessionFilterComponent } from './features/sessions/session-filter/session-filter.component';
 import { SessionsListComponent } from './features/sessions/sessions-list/sessions-list.component';
 import { DailySummaryComponent } from './features/daily-summary/daily-summary.component';
+import { MonthArchiveComponent } from './features/month-archive/month-archive.component';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ import { DailySummaryComponent } from './features/daily-summary/daily-summary.co
     StopwatchComponent,
     ManualEntryComponent,
     DailySummaryComponent,
+    MonthArchiveComponent,
     SessionFilterComponent,
     SessionsListComponent,
   ],
@@ -82,6 +84,10 @@ export class App implements OnInit {
 
   protected onDeleteRequested(sessionId: string): void {
     this.timeTrackingService.deleteWorkSession(sessionId, () => this.reloadSessionsAndNotifyWorkSessionChange());
+  }
+
+  protected onArchiveChanged(): void {
+    this.reloadSessionsAndNotifyWorkSessionChange();
   }
 
   private reloadSessions(): void {
